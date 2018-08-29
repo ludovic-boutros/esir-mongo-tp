@@ -22,6 +22,4 @@ public class Post {
   private final String title;
   
   private final String content;
-  
-  private final String userId;
 }

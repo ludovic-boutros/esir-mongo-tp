@@ -35,6 +35,7 @@ public class PostGenerator implements Processor {
     exchange.getIn().setBody(generatePost());
   }
 
+  // TODO manage post/thread/user relashionship
   private Post generatePost() {
     Thread randomThread = threadGenerator.getRandomThread();
     User randomKnownUser = userGenerator.getRandomKnownUser();
@@ -46,11 +47,8 @@ public class PostGenerator implements Processor {
               ._id(idString)
               .title(textGenerator.generateText(1))
               .content(textGenerator.generateText(10))
-              .userId(randomKnownUser.get_id())
               .build();
-      
-      randomThread.addPost(newPost.get_id());
-      
+
       return newPost;
     } else {
       if (randomThread == null) {
