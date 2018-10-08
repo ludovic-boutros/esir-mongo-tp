@@ -24,6 +24,7 @@ public class PostRouter extends RouteBuilder {
             .to("direct:add-post");
     
     from("direct:add-post")
+            .to("micrometer:counter:post.counter?increment=1")                        
             .to("stream:out")
             // TODO manage links between posts <-> threads            
             .to("mongodb3:mongo?database=forum&collection=posts&operation=insert")

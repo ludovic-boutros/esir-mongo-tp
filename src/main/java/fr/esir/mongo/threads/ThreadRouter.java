@@ -25,6 +25,7 @@ public class ThreadRouter extends RouteBuilder {
     
     from("direct:add-thread")
             // TODO
+            .to("micrometer:counter:thread.counter?increment=1")            
             .to("stream:out")
             .to("mongodb3:mongo?database=forum&collection=threads&operation=insert")
             ;

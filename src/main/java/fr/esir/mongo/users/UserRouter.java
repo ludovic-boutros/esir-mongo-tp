@@ -1,7 +1,10 @@
 package fr.esir.mongo.users;
 
+import io.micrometer.core.instrument.Tags;
+import java.util.Random;
 import lombok.AllArgsConstructor;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.micrometer.MicrometerConstants;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class UserRouter extends RouteBuilder {
 
+  private final Random r = new Random();
   private final UserGenerator userGenerator;
   
   @Override
@@ -21,13 +25,29 @@ public class UserRouter extends RouteBuilder {
     from("timer:user?period={{user.timer.period}}").routeId("user-generator")
             .process(userGenerator)
             .filter(body().isNotNull())
+            .setHeader(MicrometerConstants.HEADER_METRIC_TAGS, constant(Tags.of("phase", "prepare")))            
+            .to("micrometer:counter:user.counter?increment=1")            
             .to("direct:add-user");
     
     from("direct:add-user")
             // TODO
-            .to("stream:out")            
-            .to("mongodb3:mongo?database=forum&collection=users&operation=insert")
+            .choice()
+            .when(e -> throwError())
+              .setHeader(MicrometerConstants.HEADER_METRIC_TAGS, constant(Tags.of("phase", "error")))
+              .to("micrometer:counter:user.counter?increment=1")            
+              // TODO throw error
+            .endChoice()
+            .otherwise()
+              .to("stream:out")
+              .to("mongodb3:mongo?database=forum&collection=users&operation=insert")
+              .setHeader(MicrometerConstants.HEADER_METRIC_TAGS, constant(Tags.of("phase", "done")))            
+              .to("micrometer:counter:user.counter?increment=1")
+            .endChoice()
+            .end()
             ;
   }
 
+  private boolean throwError() {
+    return r.nextBoolean() && r.nextBoolean() && r.nextBoolean();
+  }
 }
