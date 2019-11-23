@@ -26,7 +26,7 @@ public class UserRouter extends RouteBuilder {
     from("direct:add-user")
             // TODO
             .to("stream:out")            
-            .to("mongodb3:mongo?database=forum&collection=users&operation=insert")
+            .to("mongodb:mongo?database=forum&collection=users&operation=insert")
             ;
   }
 

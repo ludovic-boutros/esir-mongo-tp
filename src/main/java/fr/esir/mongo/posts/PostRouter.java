@@ -26,7 +26,7 @@ public class PostRouter extends RouteBuilder {
     from("direct:add-post")
             .to("stream:out")
             // TODO manage links between posts <-> threads            
-            .to("mongodb3:mongo?database=forum&collection=posts&operation=insert")
+            .to("mongodb:mongo?database=forum&collection=posts&operation=insert")
             ;
   }
 

@@ -26,7 +26,7 @@ public class ThreadRouter extends RouteBuilder {
     from("direct:add-thread")
             // TODO
             .to("stream:out")
-            .to("mongodb3:mongo?database=forum&collection=threads&operation=insert")
+            .to("mongodb:mongo?database=forum&collection=threads&operation=insert")
             ;
   }
 
