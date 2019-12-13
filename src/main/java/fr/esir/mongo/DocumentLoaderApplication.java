@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class DocumentLoaderApplication {
 
-  @Value("mongo.cnx.string")
+  @Value("${mongo.cnx.string}")
   private String mongoCnxString;
   
   /**
@@ -24,7 +24,7 @@ public class DocumentLoaderApplication {
   }
 
   @Bean(name = "mongo")
-  public Mongo mongoComponent() {
+  public MongoClient mongoComponent() {
     String[] addressPart = mongoCnxString.split(":");
     return new MongoClient(new ServerAddress(addressPart[0], Integer.parseInt(addressPart[1])));
   }
