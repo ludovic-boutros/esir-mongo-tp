@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- *
  * @author lboutros
  */
 @Data
@@ -18,8 +17,8 @@ import lombok.ToString;
 public class Post {
   @EqualsAndHashCode.Include
   private final String _id;
-  
+
   private final String title;
-  
+
   private final String content;
 }

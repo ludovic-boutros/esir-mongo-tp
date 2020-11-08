@@ -3,17 +3,17 @@ package fr.esir.mongo.threads;
 import fr.esir.mongo.text.TextGenerator;
 import fr.esir.mongo.users.User;
 import fr.esir.mongo.users.UserGenerator;
-import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.springframework.stereotype.Component;
 
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
- *
  * @author lboutros
  */
 @Component
@@ -37,7 +37,7 @@ public class ThreadGenerator implements Processor {
     exchange.getIn().setBody(generateThread());
   }
 
-  // TODO manage post/thread/user relashionship
+  // TODO manage post/thread/user relationship
   private Thread generateThread() {
     User randomKnownUser = userGenerator.getRandomKnownUser();
     if (randomKnownUser != null) {

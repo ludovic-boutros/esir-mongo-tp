@@ -5,15 +5,15 @@ import fr.esir.mongo.threads.Thread;
 import fr.esir.mongo.threads.ThreadGenerator;
 import fr.esir.mongo.users.User;
 import fr.esir.mongo.users.UserGenerator;
-import java.util.concurrent.atomic.AtomicLong;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
- *
  * @author lboutros
  */
 @Component
@@ -35,11 +35,11 @@ public class PostGenerator implements Processor {
     exchange.getIn().setBody(generatePost());
   }
 
-  // TODO manage post/thread/user relashionship
+  // TODO manage post/thread/user relationship
   private Post generatePost() {
     Thread randomThread = threadGenerator.getRandomThread();
     User randomKnownUser = userGenerator.getRandomKnownUser();
-    
+
     if (randomThread != null && randomKnownUser != null) {
       // we need a thread in order to add a post into
       String idString = Long.toString(id.getAndIncrement());
